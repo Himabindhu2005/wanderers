@@ -1,2 +1,2 @@
-#myProject
-Discover a wide range of beautiful campgrounds perfect for your next adventure. Share your experiences by adding your own campsites, and connect with fellow explorers by leaving reviews on your favorite spots. Join our community and make every trip unforgettable!
+# myProject
+Discover a wide range of beautiful campgrounds perfect for your next adventure. Share your experiences by adding your own campsites, and connect with fellow explorers by leaving reviews on your favorite spots. Join our community and make every trip unforgettable! 
