@@ -29,9 +29,9 @@ const campgroundsRoute = require('./routes/campgrounds');
 const reviewsRoute = require('./routes/reviews');
 const { name } = require('ejs');
 const { MongoStore } = require('connect-mongo');
-const MongoDbStore=require("connect-mongo")(session);
-// const dbUrl=process.env.DB_URL
-const dbUrl=process.env.DB_URL||'mongodb://127.0.0.1:27017/yelp-camp';
+// const MongoDbStore=require("connect-mongo")(session);
+const dbUrl=process.env.DB_URL
+// const dbUrl=process.env.DB_URL||'mongodb://127.0.0.1:27017/yelp-camp';
 // dbUrl
 mongoose.connect(dbUrl);
 
@@ -55,21 +55,21 @@ app.use(mongoSanitize({
 }))
  
 
-// const store = MongoStore.create({
-//   mongoUrl: dbUrl,
-//   touchAfter: 24 * 60 * 60,
-//   crypto: {
-//       secret: 'thisshouldbeabettersecret!'
-//   }
-// });
-
-const secret=process.env.SECRET || 'thisismysecret';
-
-const store=new MongoDbStore({
-  url:dbUrl,
-  secret,
-  touchAfter:24 * 60 * 60
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+      secret: 'thisshouldbeabettersecret!'
+  }
 });
+
+// const secret=process.env.SECRET || 'thisismysecret';
+
+// const store=new MongoDbStore({
+//   url:dbUrl,
+//   secret,
+//   touchAfter:24 * 60 * 60
+// });
 
 store.on("error",function(e){
   console.log("session store error",e)
