@@ -19,7 +19,8 @@ const LocalStratergy = require('passport-local');
 const User = require('./models/user')
 const mongoSanitize=require('express-mongo-sanitize');
 const helmet=require('helmet')
-const MongoStore=require('connect-mongo')
+// const MongoStore=require('connect-mongo')
+
 
 const { title } = require('process');
 
@@ -27,8 +28,10 @@ const userRoute = require('./routes/users')
 const campgroundsRoute = require('./routes/campgrounds');
 const reviewsRoute = require('./routes/reviews');
 const { name } = require('ejs');
-const dbUrl=process.env.DB_URL;
-// const dbUrl='mongodb://127.0.0.1:27017/yelp-camp';
+const { MongoStore } = require('connect-mongo');
+const MongoDbStore=require("connect-mongo")(session);
+// const dbUrl=process.env.DB_URL
+const dbUrl=process.env.DB_URL||'mongodb://127.0.0.1:27017/yelp-camp';
 // dbUrl
 mongoose.connect(dbUrl);
 
@@ -52,12 +55,20 @@ app.use(mongoSanitize({
 }))
  
 
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  touchAfter: 24 * 60 * 60,
-  crypto: {
-      secret: 'thisshouldbeabettersecret!'
-  }
+// const store = MongoStore.create({
+//   mongoUrl: dbUrl,
+//   touchAfter: 24 * 60 * 60,
+//   crypto: {
+//       secret: 'thisshouldbeabettersecret!'
+//   }
+// });
+
+const secret=process.env.SECRET || 'thisismysecret';
+
+const store=new MongoDbStore({
+  url:dbUrl,
+  secret,
+  touchAfter:24 * 60 * 60
 });
 
 store.on("error",function(e){
@@ -67,7 +78,7 @@ store.on("error",function(e){
 const sessionConfig = {
   store,
   name:'session',
-  secret: 'thismysecret',
+  secret,
   resave: true,
   saveUninitialized: true,
   cookie: {
